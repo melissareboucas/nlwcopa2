@@ -2,6 +2,7 @@
   "expo": {
     "name": "nlwcopamobile",
     "slug": "nlwcopamobile",
+    "owner": "melissamnrv",
     "scheme": "nlwcopamobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,9 +20,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.nocompany.nlwcopamobile",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.nocompany.nlwcopamobile",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -29,6 +34,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "23e1c638-a59d-41e3-a3f7-df77c8305458"
+      }
     }
   }
 }
