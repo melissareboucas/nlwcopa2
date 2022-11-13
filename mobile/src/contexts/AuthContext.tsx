@@ -35,7 +35,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: process.env.CLIENT_ID,
-        redirectUri: AuthSession.makeRedirectUri({useProxy: true}),
+        redirectUri: AuthSession.makeRedirectUri({}),
         scopes: ['profile', 'email']
     },
     {useProxy: true})
@@ -43,7 +43,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     async function signIn() {
         try {
             setIsUserLoading(true)
-            await promptAsync(discovery, { useProxy, showInRecents: true} );
+            await promptAsync();
 
 
         } catch (error) {
