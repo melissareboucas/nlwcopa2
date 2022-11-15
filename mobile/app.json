@@ -20,12 +20,12 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.nocompany.nlwcopamobile",
+      "bundleIdentifier": "com.melissamnrv.nlwcopamobile",
       "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.nocompany.nlwcopamobile",
+      "package": "com.melissamnrv.nlwcopamobile",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

@@ -32,18 +32,19 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
     const[isUserLoading, setIsUserLoading] = useState(false)
 
-    const [request, response, promptAsync] = Google.useAuthRequest({
+    const [_, googleResponse, googleAuth] = Google.useAuthRequest({
         clientId: process.env.CLIENT_ID,
-        androidClientId: '118742075177-6c0vosth5shbfai8umhdisliot6o07r1.apps.googleusercontent.com',
+        androidClientId: '118742075177-6c0vosth5shbfai8umhdisliot6o07r1.apps.googleusercontent.com', 
         redirectUri: AuthSession.makeRedirectUri({useProxy: true}),
-        scopes: ['profile', 'email']
+        scopes: ['profile', 'email'],
+        selectAccount: true
     })
     
 
     async function signIn() {
         try {
             setIsUserLoading(true)
-            await promptAsync();
+            await googleAuth();
 
 
         } catch (error) {
@@ -55,32 +56,37 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
         }
     }
 
-    async function signInWithGoogle(access_token: string) {
-        try {
-            setIsUserLoading(true);
-            
-
-            const tokenResponse = await api.post('/users', {access_token})
-            api.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.data.token}`  
-            //console.log(tokenResponse.data.token)
-            
-            const userInfoResponse = await api.get('/me');
-            setUser(userInfoResponse.data.user)
-
-        } catch (error) {
-            console.log(error);
-            throw error
-        } finally {
-            setIsUserLoading(false)
-        }
-    }
+    
 
 
     useEffect(() => {
-        if(response?.type === 'success' && response.authentication?.accessToken) {
-            signInWithGoogle(response.authentication.accessToken)
+
+        async function signInWithGoogle(access_token: string) {
+            try {
+                setIsUserLoading(true);
+
+               
+                const tokenResponse = await api.post('/users', {access_token})
+                api.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.data.token}`  
+                //console.log(tokenResponse.data.token)
+                
+                const userInfoResponse = await api.get('/me');
+                setUser(userInfoResponse.data.user)
+                
+    
+            } catch (error) {
+                console.log(error);
+                throw error
+            } finally {
+                setIsUserLoading(false)
+            }
         }
-    }, [response]);
+
+        if(googleResponse?.type === 'success') {
+            const { access_token } = googleResponse.params;
+            signInWithGoogle(access_token)
+        }
+    }, [googleResponse]);
 
 
     return (
